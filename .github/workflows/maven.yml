@@ -34,8 +34,14 @@ jobs:
              msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
              cd ../tools
              ./make_distrib.bat win64
-             cd ../binary_distrib/win64/bin
-             zip jcef-win64.zip *
+             cd
+             ls
+      -  name: Zip win64
+         uses: thedoctor0/zip-release@master
+         with:
+           type: 'zip'
+           filename: 'jcef-win64.zip'
+           path: 'dsfdsf'
       -  name: Release
          uses: marvinpinto/action-automatic-releases@latest
          with:
