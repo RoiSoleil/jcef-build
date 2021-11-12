@@ -1,0 +1,28 @@
+name: JCEF Build
+on:
+   push:
+      branches:
+      - main
+   pull_request:
+      branches:
+      - main
+jobs:
+   build:
+      runs-on: windows-latest
+      steps:
+      -  name: Set up JDK 17
+         uses: actions/setup-java@v2
+         with:
+            distribution: adopt
+            java-version: 17
+      -  name: Set up Python 3.10
+         uses: actions/setup-python@v2
+         with:
+            python-version: 3.1
+            architecture: x64
+      -  name: Set up MS Build
+         uses: microsoft/setup-msbuild@v1.1
+      -  name: Setup Ninja
+         uses: seanmiddleditch/gha-setup-ninja@v3
+      -  name: Setup tmate session
+         uses: mxschmitt/action-tmate@v3
