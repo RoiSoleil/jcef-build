@@ -25,23 +25,23 @@ jobs:
       -  name: Build
          shell: bash
          run: |-
-             export JCEF_DIR="$PWD/src"
-             export PYTHON_EXECUTABLE=/c/hostedtoolcache/windows/Python/3.7.9/x64/python.exe
-             git clone https://github.com/chromiumembedded/java-cef.git $JCEF_DIR
-             mkdir -p $JCEF_DIR/jcef_build
-             cd $JCEF_DIR/jcef_build
-             cmake -G "Visual Studio 16" -A x64 ..
-             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
-             cd ../tools
-             ./make_distrib.bat win64
-             cd
-             ls
+            export JCEF_DIR="$PWD/src"
+            export PYTHON_EXECUTABLE=/c/hostedtoolcache/windows/Python/3.7.9/x64/python.exe
+            git clone https://github.com/chromiumembedded/java-cef.git $JCEF_DIR
+            mkdir -p $JCEF_DIR/jcef_build
+            cd $JCEF_DIR/jcef_build
+            cmake -G "Visual Studio 16" -A x64 ..
+            msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
+            cd ../tools
+            ./make_distrib.bat win64
+            cd
+            ls
       -  name: Zip win64
          uses: thedoctor0/zip-release@master
          with:
-           type: 'zip'
-           filename: 'jcef-win64.zip'
-           path: 'dsfdsf'
+            type: zip
+            filename: jcef-win64.zip
+            path: dsfdsf
       -  name: Release
          uses: marvinpinto/action-automatic-releases@latest
          with:
@@ -49,5 +49,7 @@ jobs:
             automatic_release_tag: latest
             prerelease: true
             title: Development Build
-            files: |-
-               jcef-build/src/binary_distrib/win64/bin/jcef-win64.zip
+            files: jcef-win64.zip
+      -  name: Setup tmate session
+         if: ${{ failure() }}
+         uses: mxschmitt/action-tmate@v3
