@@ -50,5 +50,4 @@ jobs:
             title: Development Build
             files: jcef-win64.zip
       -  name: Setup tmate session
-         if: ${{ failure() }}
          uses: mxschmitt/action-tmate@v3
