@@ -48,4 +48,4 @@ jobs:
             automatic_release_tag: latest
             prerelease: true
             title: Development Build
-            files: jcef-win64.zip
+            files: src/binary_distrib/win64/bin/jcef-win64.zip
