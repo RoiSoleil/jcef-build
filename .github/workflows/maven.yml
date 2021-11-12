@@ -18,11 +18,9 @@ jobs:
       -  name: Set up Python 3.10
          uses: actions/setup-python@v2
          with:
-            python-version: 3.1
+            python-version: 3.7
             architecture: x64
       -  name: Set up MS Build
          uses: microsoft/setup-msbuild@v1.1
-      -  name: Setup Ninja
-         uses: seanmiddleditch/gha-setup-ninja@v3
       -  name: Setup tmate session
          uses: mxschmitt/action-tmate@v3
