@@ -22,6 +22,7 @@ jobs:
             architecture: x64
       -  name: Set up MS Build
          uses: microsoft/setup-msbuild@v1.1
+            vs-version: '[16.4,16.5)'
 #      -  name: Build
 #         shell: bash
 #         run: |-
