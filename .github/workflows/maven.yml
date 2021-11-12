@@ -35,16 +35,12 @@ jobs:
             cd ../tools
             ./make_distrib.bat win64
             ls
-      -  name: Buildv
-         shell: bash
-         run: |-
-            ls
-      -  name: Zip win64
+      -  name: Zip jcef-win64
          uses: thedoctor0/zip-release@master
          with:
             type: zip
             filename: jcef-win64.zip
-            path: dsfdsf
+            path: 'src/binary_distrib/win64/bin'
       -  name: Release
          uses: marvinpinto/action-automatic-releases@latest
          with:
