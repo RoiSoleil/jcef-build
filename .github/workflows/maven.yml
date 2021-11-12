@@ -22,7 +22,7 @@ jobs:
             architecture: x64
       -  name: Set up MS Build
          uses: microsoft/setup-msbuild@v1.1
-      -  name: Build
+      -  name: Build jcef-win64
          shell: bash
          run: |-
             export JCEF_DIR="$PWD/src"
@@ -34,7 +34,10 @@ jobs:
             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
             cd ../tools
             ./make_distrib.bat win64
-            cd
+            ls
+      -  name: Buildv
+         shell: bash
+         run: |-
             ls
       -  name: Zip win64
          uses: thedoctor0/zip-release@master
