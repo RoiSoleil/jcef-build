@@ -34,5 +34,14 @@ jobs:
              msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
              cd ../tools
              ./make_distrib.bat win64
-      -  name: Setup tmate session
-         uses: mxschmitt/action-tmate@v3
+             cd ../binary_distrib/win64/bin
+             zip jcef-win64.zip *
+      -  name: Release
+         uses: marvinpinto/action-automatic-releases@latest
+         with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            automatic_release_tag: latest
+            prerelease: true
+            title: Development Build
+            files: |-
+               jcef-build/src/binary_distrib/win64/bin/jcef-win64.zip
