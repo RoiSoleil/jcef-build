@@ -15,12 +15,22 @@ jobs:
          with:
             distribution: adopt
             java-version: 17
-      -  name: Set up Python 3.10
+      -  name: Set up Python 3.7
          uses: actions/setup-python@v2
          with:
             python-version: 3.7
             architecture: x64
       -  name: Set up MS Build
          uses: microsoft/setup-msbuild@v1.1
+      -  name: Build
+         shell: bash
+         run: |-
+             export JCEF_DIR="$PWD/src"
+             export PYTHON_EXECUTABLE=/c/hostedtoolcache/windows/Python/3.7.9/x64/python.exe
+             git clone https://github.com/chromiumembedded/java-cef.git $JCEF_DIR
+             mkdir -p $JCEF_DIR/jcef_build
+             cd $JCEF_DIR/jcef_build
+             cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=Release ..
+             msbuild.exe ALL_BUILD.vcxproj
       -  name: Setup tmate session
          uses: mxschmitt/action-tmate@v3
