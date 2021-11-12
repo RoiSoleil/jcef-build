@@ -34,13 +34,13 @@ jobs:
             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
             cd ../tools
             ./make_distrib.bat win64
-            ls
+            ./compile.bat win64
       -  name: Zip jcef-win64
          uses: thedoctor0/zip-release@master
          with:
             type: zip
             filename: jcef-win64.zip
-            path: 'src/binary_distrib/win64/bin'
+            directory: src/binary_distrib/win64/bin
       -  name: Release
          uses: marvinpinto/action-automatic-releases@latest
          with:
@@ -49,5 +49,3 @@ jobs:
             prerelease: true
             title: Development Build
             files: jcef-win64.zip
-      -  name: Setup tmate session
-         uses: mxschmitt/action-tmate@v3
