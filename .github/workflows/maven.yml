@@ -7,7 +7,7 @@ on:
       branches:
       - main
 jobs:
-   build:
+   build-on-windows:
       runs-on: windows-latest
       steps:
       -  name: Set up JDK 17
@@ -39,6 +39,12 @@ jobs:
             compile.bat win64
             make_distrib.bat win64
          shell: cmd
+      -  name: Zip jcef-win64
+         uses: thedoctor0/zip-release@master
+         with:
+            type: zip
+            filename: jcef-win64.zip
+            directory: src/binary_distrib/win64/bin
       -  name: Build jcef-win32
          run: |
             set JCEF_DIR="%cd%/src"
@@ -50,18 +56,12 @@ jobs:
             compile.bat win32
             make_distrib.bat win32
          shell: cmd
-      -  name: Zip jcef-win64
-         uses: thedoctor0/zip-release@master
-         with:
-            type: zip
-            filename: jcef-win64.zip
-            directory: src/binary_distrib/win64/bin
       -  name: Zip jcef-win32
          uses: thedoctor0/zip-release@master
          with:
             type: zip
             filename: jcef-win32.zip
-            directory: src/binary_distrib/win64/bin
+            directory: src/binary_distrib/win32/bin
       -  name: Release
          uses: marvinpinto/action-automatic-releases@latest
          with:
@@ -69,6 +69,6 @@ jobs:
             automatic_release_tag: latest
             prerelease: true
             title: Development Build
-            files: |
-                 src/binary_distrib/win64/bin/jcef-win64.zip
-                 src/binary_distrib/win64/bin/jcef-win32.zip
+            files: |-
+               src/binary_distrib/win64/bin/jcef-win64.zip
+               src/binary_distrib/win64/bin/jcef-win32.zip
