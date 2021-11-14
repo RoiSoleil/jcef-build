@@ -34,11 +34,24 @@ jobs:
             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
             cd ../tools
             cmd /C "start /wait ./make_distrib.bat win64"
+      -  name: Build jcef-win64
+         shell: bash
+         run: |-
+            cmake -G "Visual Studio 16" -A Win32 ..
+            msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
+            cd ../tools
+            cmd /C "start /wait ./make_distrib.bat win32"
       -  name: Zip jcef-win64
          uses: thedoctor0/zip-release@master
          with:
             type: zip
             filename: jcef-win64.zip
+            directory: src/binary_distrib/win64/bin
+      -  name: Zip jcef-win32
+         uses: thedoctor0/zip-release@master
+         with:
+            type: zip
+            filename: jcef-win32.zip
             directory: src/binary_distrib/win64/bin
       -  name: Release
          uses: marvinpinto/action-automatic-releases@latest
