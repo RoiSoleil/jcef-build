@@ -34,7 +34,7 @@ jobs:
             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
             cd ../tools
             cmd /C "start /wait ./make_distrib.bat win64"
-      -  name: Build jcef-win64
+      -  name: Build jcef-win32
          shell: bash
          run: |-
             cmake -G "Visual Studio 16" -A Win32 ..
