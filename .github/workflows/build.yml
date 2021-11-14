@@ -51,6 +51,7 @@ jobs:
             cd ../tools
             compile.bat win64
             make_distrib.bat win64
+            cd ../..
             7z a -tzip -r jcef-win64.zip src/binary_distrib/win64/bin
          shell: cmd
       -  name: Upload jcef-win64
@@ -72,6 +73,7 @@ jobs:
             cd ../tools
             compile.bat win32
             make_distrib.bat win32
+            cd ../..
             7z a -tzip -r jcef-win32.zip src/binary_distrib/win32/bin
          shell: cmd
       -  name: Upload jcef-win32
