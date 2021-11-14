@@ -23,28 +23,31 @@ jobs:
       -  name: Set up MS Build
          uses: microsoft/setup-msbuild@v1.1
       -  name: Checkout jcef project
-         shell: bash
-         run: |-
+         run: |
             export JCEF_DIR="$PWD/src"
             git clone https://github.com/chromiumembedded/java-cef.git $JCEF_DIR
             mkdir -p $JCEF_DIR/jcef_build
-      -  name: Build jcef-win64
          shell: bash
-         run: |-
-            SET JCEF_DIR="%cd%/src"
-            SET PYTHON_EXECUTABLE=c:/hostedtoolcache/windows/Python/3.7.9/x64/python.exe
+      -  name: Build jcef-win64
+         run: |
+            set JCEF_DIR="%cd%/src"
+            set PYTHON_EXECUTABLE=c:/hostedtoolcache/windows/Python/3.7.9/x64/python.exe
             cd %JCEF_DIR%/jcef_build
             cmake -G "Visual Studio 16" -A x64 ..
             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
             cd ../tools
-            cmd /C "start /wait ./make_distrib.bat win64"
+            make_distrib.bat win64
+         shell: cmd
       -  name: Build jcef-win32
-         shell: bash
-         run: |-
+         run: |
+            set JCEF_DIR="%cd%/src"
+            set PYTHON_EXECUTABLE=c:/hostedtoolcache/windows/Python/3.7.9/x64/python.exe
+            cd %JCEF_DIR%/jcef_build
             cmake -G "Visual Studio 16" -A Win32 ..
             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
             cd ../tools
-            cmd /C "start /wait ./make_distrib.bat win32"
+            make_distrib.bat win32
+         shell: cmd
       -  name: Zip jcef-win64
          uses: thedoctor0/zip-release@master
          with:
