@@ -33,7 +33,7 @@ jobs:
             cmake -G "Visual Studio 16" -A x64 ..
             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
             cd ../tools
-            cmd /C "start ./make_distrib.bat win64"
+            cmd /C "start /wait ./make_distrib.bat win64"
       -  name: Zip jcef-win64
          uses: thedoctor0/zip-release@master
          with:
