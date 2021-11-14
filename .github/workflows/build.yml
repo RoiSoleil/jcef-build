@@ -48,16 +48,11 @@ jobs:
             cd %JCEF_DIR%\jcef_build
             cmake -G "Visual Studio 16" -A x64 ..
             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
-            cd ..\tools
+            cd ../tools
             compile.bat win64
             make_distrib.bat win64
+            7z a -tzip -r jcef-win64.zip src/binary_distrib/win64/bin
          shell: cmd
-      -  name: Zip jcef-win64
-         uses: thedoctor0/zip-release@master
-         with:
-            type: zip
-            filename: jcef-win64.zip
-            directory: src/binary_distrib/win64/bin
       -  name: Build jcef-win32
          run: |
             set JCEF_DIR="%cd%/src"
@@ -68,23 +63,26 @@ jobs:
             cd ../tools
             compile.bat win32
             make_distrib.bat win32
+            7z a -tzip -r jcef-win32.zip src/binary_distrib/win32/bin
          shell: cmd
-      -  name: Zip jcef-win32
-         uses: thedoctor0/zip-release@master
+      -  name: Upload jcef-win64
+         uses: actions/upload-release-asset@v1
+         env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          with:
-            type: zip
-            filename: jcef-win32.zip
-            directory: src/binary_distrib/win32/bin
-      -  name: Release
-         uses: marvinpinto/action-automatic-releases@latest
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./jcef-win64.zip
+            asset_name: jcef-win64.zip
+            asset_content_type: application/zip
+      -  name: Upload jcef-win32
+         uses: actions/upload-release-asset@v1
+         env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          with:
-            repo_token: ${{ secrets.GITHUB_TOKEN }}
-            automatic_release_tag: latest
-            prerelease: true
-            title: Development Build
-            files: |-
-               src/binary_distrib/win64/bin/jcef-win64.zip
-               src/binary_distrib/win64/bin/jcef-win32.zip
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./jcef-win32.zip
+            asset_name: jcef-win32.zip
+            asset_content_type: application/zip
    build-on-ubuntu:
       needs: create-release
       runs-on: ubuntu-latest
