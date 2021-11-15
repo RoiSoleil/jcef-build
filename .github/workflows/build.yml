@@ -74,8 +74,8 @@ jobs:
             cmake -G "Visual Studio 16" -A Win32 ..
             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
             cd ../tools
-            compile.bat win32
-            make_distrib.bat win32
+            call compile.bat win32
+            call make_distrib.bat win32
             cd ../..
             7z a -tzip -r jcef-win32.zip src/binary_distrib/win32/bin
          shell: cmd
