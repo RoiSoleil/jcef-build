@@ -52,7 +52,9 @@ jobs:
             compile.bat win64
             make_distrib.bat win64
             cd ../..
+            ls
             7z a -tzip -r jcef-win64.zip src/binary_distrib/win64/bin
+            ls
          shell: cmd
       -  name: Upload jcef-win64
          uses: actions/upload-release-asset@v1
@@ -97,17 +99,3 @@ jobs:
       steps:
       -  name: Todo
          run: echo Todo
-   rollback-release:
-      needs:
-      - build-on-windows
-      - build-on-ubuntu
-      - build-on-macos
-      runs-on: ubuntu-latest
-      steps:
-      -  name: Rollback Release
-         if: failure() && steps.create-release.outputs.id != ''
-         uses: author/action-rollback@stable
-         with:
-            id: ${{ needs.create-release.id }}
-         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
