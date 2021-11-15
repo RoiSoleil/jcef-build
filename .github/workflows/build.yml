@@ -51,7 +51,7 @@ jobs:
             call make_distrib.bat win64
             cd ../binary_distrib/win64/bin
             7z a -tzip -r jcef-win64.zip *
-            move jcef-win64.zip ../../../../../
+            move jcef-win64.zip ../../../../
          shell: cmd
       -  name: Upload jcef-win64
          uses: actions/upload-release-asset@v1
@@ -74,7 +74,7 @@ jobs:
             call make_distrib.bat win32
             cd ../binary_distrib/win32/bin
             7z a -tzip -r jcef-win32.zip *
-            move jcef-win32.zip ../../../../../
+            move jcef-win32.zip ../../../../
          shell: cmd
       -  name: Upload jcef-win32
          uses: actions/upload-release-asset@v1
@@ -122,7 +122,7 @@ jobs:
             ./make_distrib.sh linux64
             cd ../binary_distrib/linux64/bin
             zip -r jcef-linux64.zip *
-            mv jcef-linux64.zip ../../../../../
+            mv jcef-linux64.zip ../../../../
          shell: bash
       -  name: Upload jcef-linux64
          uses: actions/upload-release-asset@v1
