@@ -50,12 +50,10 @@ jobs:
             cmake -G "Visual Studio 16" -A x64 ..
             msbuild.exe ALL_BUILD.vcxproj /property:Configuration=Release
             cd ../tools
-            compile.bat win64
-            make_distrib.bat win64
+            call compile.bat win64
+            call make_distrib.bat win64
             cd ../..
-            ls
             7z a -tzip -r jcef-win64.zip src/binary_distrib/win64/bin
-            ls
          shell: cmd
       -  name: Upload jcef-win64
          uses: actions/upload-release-asset@v1
