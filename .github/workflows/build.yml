@@ -108,8 +108,28 @@ jobs:
             git clone https://github.com/chromiumembedded/java-cef.git $JCEF_DIR
             mkdir -p $JCEF_DIR/jcef_build
          shell: bash
-      -  name: Setup tmate session
-         uses: mxschmitt/action-tmate@v3
+      -  name: Build jcef-linux64
+         run: |
+            export JCEF_DIR="$PWD/src"
+            export PYTHON_EXECUTABLE=/opt/hostedtoolcache/Python/3.7.12/x64/python
+            cd $JCEF_DIR/jcef_build
+            cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
+            make -j4
+            cd ../tools
+            ./compile.sh linux64
+            ./make_distrib.sh linux64
+            cd ../..
+            zip -r jcef-linux64.zip src/binary_distrib/linux64/bin
+         shell: bash
+      -  name: Upload jcef-linux64
+         uses: actions/upload-release-asset@v1
+         env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         with:
+            upload_url: ${{ needs.create-release.outputs.upload_url }}
+            asset_path: ./jcef-linux64.zip
+            asset_name: jcef-linux64.zip
+            asset_content_type: application/zip
    build-on-macos:
       needs: create-release
       runs-on: macos-latest
