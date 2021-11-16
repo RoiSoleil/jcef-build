@@ -1,0 +1,53 @@
+name: build
+on:
+   push:
+      branches:
+      - main
+jobs:
+#
+#
+   create-release:
+      runs-on: ubuntu-latest
+      outputs:
+         upload_url: ${{ steps.create-release.outputs.upload_url }}
+      steps:
+      -  name: Identifier
+         id: identifier
+         run: echo "::set-output name=identifier::$(date +'%s')"
+      -  name: Create a release
+         id: create-release
+         uses: actions/create-release@v1
+         env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         with:
+            tag_name: release-${{ steps.identifier.outputs.identifier }}
+            release_name: Release
+   build-linux64:
+      needs: create-release
+      runs-on: ubuntu-latest
+      steps:
+      -  name: Set up JDK 17
+         uses: actions/setup-java@v2
+         with:
+            distribution: adopt
+            java-version: 17
+      -  name: Set up Python 3.7
+         uses: actions/setup-python@v2
+         with:
+            python-version: 3.7
+            architecture: x64
+      -  name: Set up Clang
+         uses: egor-tensin/setup-clang@v1
+         with:
+            version: latest
+            platform: x64
+      -  name: Checkout jcef project
+         run: |
+            export JCEF_DIR="$PWD/src"
+            git clone https://github.com/chromiumembedded/java-cef.git $JCEF_DIR
+            mkdir -p $JCEF_DIR/jcef_build
+         shell: bash
+      -  name: Setup tmate session
+         uses: mxschmitt/action-tmate@v3
+#
+#
