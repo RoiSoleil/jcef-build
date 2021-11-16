@@ -58,9 +58,9 @@ jobs:
             cd ../tools
             call compile.bat win64
             call make_distrib.bat win64
-            cd ../binary_distrib/win64/bin
+            cd ../binary_distrib/win64
             7z a -tzip -r jcef-win64.zip *
-            move jcef-win64.zip ../../../../
+            move jcef-win64.zip ../../../
          shell: cmd
       -  name: Upload
          uses: actions/upload-release-asset@v1
@@ -108,9 +108,9 @@ jobs:
             cd ../tools
             call compile.bat win32
             call make_distrib.bat win32
-            cd ../binary_distrib/win32/bin
+            cd ../binary_distrib/win32
             7z a -tzip -r jcef-win32.zip *
-            move jcef-win32.zip ../../../../
+            move jcef-win32.zip ../../../
          shell: cmd
       -  name: Upload
          uses: actions/upload-release-asset@v1
@@ -160,9 +160,9 @@ jobs:
             ./make_distrib.sh linux64
             cd ../binary_distrib/linux64/bin/lib/linux64
             strip --strip-all ./*.so
-            cd ../../
+            cd ../
             zip -r jcef-linux64.zip *
-            mv jcef-linux64.zip ../../../../
+            mv jcef-linux64.zip ../../../
          shell: bash
       -  name: Upload
          uses: actions/upload-release-asset@v1
@@ -217,9 +217,9 @@ jobs:
             ./make_distrib.sh linux32
             cd ../binary_distrib/linux32/bin/lib/linux32
             strip --strip-all ./*.so
-            cd ../../
+            cd ../
             zip -r jcef-linux32.zip *
-            mv jcef-linux32.zip ../../../../
+            mv jcef-linux32.zip ../../../
          shell: bash
       -  name: Upload
          uses: actions/upload-release-asset@v1
@@ -232,9 +232,45 @@ jobs:
             asset_content_type: application/zip
 #
 #
-   build-on-macos:
+   build-macosx84:
          needs: create-release
          runs-on: macos-latest
          steps:
-         -  name: Todo
-            run: echo Todo
+         -  name: Set up JDK 17
+            uses: actions/setup-java@v2
+            with:
+               distribution: adopt
+               java-version: 17
+         -  name: Set up Python 3.7
+            uses: actions/setup-python@v2
+            with:
+               python-version: 3.7
+               architecture: x64
+         -  name: Checkout jcef project
+            run: |
+               export JCEF_DIR="$PWD/src"
+               git clone https://github.com/chromiumembedded/java-cef.git $JCEF_DIR
+               mkdir -p $JCEF_DIR/jcef_build
+            shell: bash
+         -  name: Build
+            run: |
+               export JCEF_DIR="$PWD/src"
+               export PYTHON_EXECUTABLE=/Users/runner/hostedtoolcache/Python/3.7.12/x64
+               cd $JCEF_DIR/jcef_build
+               sudo cmake -G "Xcode" -DPROJECT_ARCH="x86_64" ..
+               sudo xcodebuild -scheme ALL_BUILD -configuration Release build
+               cd ../tools
+               ./make_distrib.sh macosx64
+               cd ../binary_distrib/macosx64
+               zip -r jcef-macosx64.zip *
+               mv jcef-macosx64.zip../../../
+            shell: bash
+         -  name: Upload
+            uses: actions/upload-release-asset@v1
+            env:
+               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            with:
+               upload_url: ${{ needs.create-release.outputs.upload_url }}
+               asset_path: ./jcef-macosx64.zip
+               asset_name: jcef-macosx64.zip
+               asset_content_type: application/zip
