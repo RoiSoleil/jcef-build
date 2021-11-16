@@ -200,7 +200,7 @@ jobs:
       -  name: Build
          run: |
             export JCEF_DIR="$PWD/src"
-            export PYTHON_EXECUTABLE=/opt/hostedtoolcache/Python/3.7.12/x86/python
+            export PYTHON_EXECUTABLE=/opt/hostedtoolcache/Python/3.7.12/x64/python
             cd $JCEF_DIR/jcef_build
             cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
             make -j4
