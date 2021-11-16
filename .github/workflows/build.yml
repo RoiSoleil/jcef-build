@@ -160,7 +160,7 @@ jobs:
             ./make_distrib.sh linux64
             cd ../binary_distrib/linux64/bin/lib/linux64
             strip --strip-all ./*.so
-            cd ../
+            cd ../../../
             zip -r jcef-linux64.zip *
             mv jcef-linux64.zip ../../../
          shell: bash
@@ -217,7 +217,7 @@ jobs:
             ./make_distrib.sh linux32
             cd ../binary_distrib/linux32/bin/lib/linux32
             strip --strip-all ./*.so
-            cd ../
+            cd ../../../
             zip -r jcef-linux32.zip *
             mv jcef-linux32.zip ../../../
          shell: bash
@@ -263,7 +263,7 @@ jobs:
                ./make_distrib.sh macosx64
                cd ../binary_distrib/macosx64
                zip -r jcef-macosx64.zip *
-               mv jcef-macosx64.zip../../../
+               mv jcef-macosx64.zip ../../../
             shell: bash
          -  name: Upload
             uses: actions/upload-release-asset@v1
