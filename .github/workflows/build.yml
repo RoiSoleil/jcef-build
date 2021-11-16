@@ -203,10 +203,14 @@ jobs:
          shell: bash
       -  name: Build
          run: |
+            sed -i 's/set(CEF_PLATFORM "linux64")/set(CEF_PLATFORM "linux32")/g' src/CMakeLists.txt
+            sudo dpkg --add-architecture i386
+            sudo apt-get update
+            sudo apt-get install libx11-dev:i386 libgtk2.0-0:i386 libsm6:i386 libnss3:i386 libatk-bridge2.0-0:i386 libdrm2:i386 libxkbcommon0:i386 libgbm1:i386 libasound2:i386 libxshmfence1:i386
             export JCEF_DIR="$PWD/src"
             export PYTHON_EXECUTABLE=/opt/hostedtoolcache/Python/3.7.12/x64/python
             cd $JCEF_DIR/jcef_build
-            cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
+            cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DPROJECT_ARCH=x86 ..
             make -j4
             cd ../tools
             ./compile.sh linux32
