@@ -159,7 +159,7 @@ jobs:
             ./compile.sh linux64
             ./make_distrib.sh linux64
             cd ../binary_distrib/linux64/bin/lib/linux64
-            strip --strip-all $OUT_BINARY_PATH/*.so
+            strip --strip-all ./*.so
             cd ../../
             zip -r jcef-linux64.zip *
             mv jcef-linux64.zip ../../../../
