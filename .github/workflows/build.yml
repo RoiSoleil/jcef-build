@@ -292,7 +292,7 @@ jobs:
                python-version: 3.7
                architecture: x64
          -  name: Set up Ninja
-         -  uses: seanmiddleditch/gha-setup-ninja@master
+            uses: seanmiddleditch/gha-setup-ninja@master
          -  name: Checkout jcef project
             run: |
                export JCEF_DIR="$PWD/src"
