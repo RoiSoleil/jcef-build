@@ -255,9 +255,6 @@ jobs:
          -  name: Build
             run: |
                export JCEF_DIR="$PWD/src"
-               gitclone https://github.com/chromiumembedded/java-cef.git $JCEF_DIR
-               mkdir -p $JCEF_DIR/jcef_build
-               export JCEF_DIR="$PWD/src"
                export PYTHON_EXECUTABLE=/Users/runner/hostedtoolcache/Python/3.7.12/x64/python
                cd $JCEF_DIR/jcef_build
                export DEVELOPER_DIR=/Applications/Xcode_12.1.1.app/Contents/Developer
@@ -284,11 +281,12 @@ jobs:
          needs: create-release
          runs-on: macos-latest
          steps:
-         -  name: Set up JDK 7
+         -  name: Set up JDK 8
             uses: actions/setup-java@v2
             with:
                distribution: zulu
-               java-version: 7
+               java-version: 8
+               architecture: aarch64
          -  name: Set up Python 3.7
             uses: actions/setup-python@v2
             with:
@@ -303,10 +301,11 @@ jobs:
          -  name: Build
             run: |
                export JCEF_DIR="$PWD/src"
-               export PYTHON_EXECUTABLE=/Users/runner/hostedtoolcache/Python/3.7.12/x64
+               export PYTHON_EXECUTABLE=/Users/runner/hostedtoolcache/Python/3.7.12/x64/python
                cd $JCEF_DIR/jcef_build
-               sudo cmake -G "Xcode" -DPROJECT_ARCH=arm64 ..
-               sudo xcodebuild -scheme ALL_BUILD -configuration Release build
+               export DEVELOPER_DIR=/Applications/Xcode_12.1.1.app/Contents/Developer
+               cmake -G "Xcode" -DPROJECT_ARCH=arm64 ..
+               xcodebuild -scheme ALL_BUILD -configuration Release build
                cd ../tools
                ./make_distrib.sh macosx64
                cd ../binary_distrib/macosx
@@ -319,6 +318,6 @@ jobs:
                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             with:
                upload_url: ${{ needs.create-release.outputs.upload_url }}
-               asset_path: ./jcef-macosx64.zip
-               asset_name: jcef-macosx64.zip
+               asset_path: ./jcef-macosxarm64.zip
+               asset_name: jcef-macosxarm64.zip
                asset_content_type: application/zip
