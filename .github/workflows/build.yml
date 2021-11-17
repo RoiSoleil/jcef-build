@@ -286,12 +286,13 @@ jobs:
             with:
                distribution: adopt
                java-version: 8
-               architecture: aarch64
          -  name: Set up Python 3.7
             uses: actions/setup-python@v2
             with:
                python-version: 3.7
                architecture: x64
+         -  name: Set up Ninja
+         -  uses: seanmiddleditch/gha-setup-ninja@master
          -  name: Checkout jcef project
             run: |
                export JCEF_DIR="$PWD/src"
@@ -303,14 +304,13 @@ jobs:
                export JCEF_DIR="$PWD/src"
                export PYTHON_EXECUTABLE=/Users/runner/hostedtoolcache/Python/3.7.12/x64/python
                cd $JCEF_DIR/jcef_build
-               export DEVELOPER_DIR=/Applications/Xcode_12.1.1.app/Contents/Developer
-               cmake -G "Xcode" -DPROJECT_ARCH=arm64 ..
-               xcodebuild -scheme ALL_BUILD -configuration Release build
+               cmake -G "Ninja" -DPROJECT_ARCH="arm64" -DCMAKE_BUILD_TYPE=Release ..
+               ninja
                cd ../tools
                ./make_distrib.sh macosx64
-               cd ../binary_distrib/macosx
+               cd ../binary_distrib/macosx64
                zip -r jcef-macosxarm64.zip *
-               mv jcef-macosxarm64.zip../../../
+               mv jcef-macosxarm64.zip ../../../
             shell: bash
          -  name: Upload
             uses: actions/upload-release-asset@v1
