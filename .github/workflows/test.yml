@@ -6,31 +6,14 @@ on:
 jobs:
 #
 #
-   create-release:
-      runs-on: macos-latest
-      outputs:
-         upload_url: ${{ steps.create-release.outputs.upload_url }}
-      steps:
-      -  name: Identifier
-         id: identifier
-         run: echo "::set-output name=identifier::$(date +'%s')"
-      -  name: Create a release
-         id: create-release
-         uses: actions/create-release@v1
-         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         with:
-            tag_name: release-${{ steps.identifier.outputs.identifier }}
-            release_name: Release
-   build-linux32:
-      needs: create-release
+   test:
       runs-on: macos-latest
       steps:
-      -  name: Set up JDK 17
+      -  name: Set up JDK 7
          uses: actions/setup-java@v2
          with:
-            distribution: adopt
-            java-version: 17
+            distribution: zulu
+            java-version: 7
             architecture: x64
       -  name: Set up Python 3.7
          uses: actions/setup-python@v2
