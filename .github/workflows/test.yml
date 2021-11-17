@@ -31,7 +31,7 @@ jobs:
          with:
             distribution: adopt
             java-version: 17
-            architecture: aarch64
+            architecture: x64
       -  name: Set up Python 3.7
          uses: actions/setup-python@v2
          with:
